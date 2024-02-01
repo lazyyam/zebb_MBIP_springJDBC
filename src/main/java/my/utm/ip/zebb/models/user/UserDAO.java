@@ -33,8 +33,9 @@ public UserDAO(int id, String username, String fullname, String nickname, String
     this.level = level;
 }
 
+
 public UserDAO() {
-    //TODO Auto-generated constructor stub
+    this.id = 0;
 }
 
 public int getId() {

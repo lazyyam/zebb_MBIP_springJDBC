@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" 
-    pageEncoding="ISO-8859-1" isELIgnored="false" %>
+    pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/common/auth.jsp" %>
 <!DOCTYPE html>
@@ -13,17 +13,17 @@
     </head>
     <body>
 
-        <jsp:include page="../common/header.jsp" />
+        <%@ include file="/WEB-INF/views/header.jsp" %> 
 
         <div class="main-container">
-            <jsp:include page="../common/sidebar.jsp" />
+            <%@ include file="/WEB-INF/views/userSideBar.jsp" %> 
     
             <!-- Main Content Section -->
             <div class='main-content-container'>
                 <div class="body-container">
-                    <div class="main-title">
-                        Edit Profile
-                    </div>
+                    <h1 class="main-title">
+                        Profile
+                    </h1>
                     <form action="updateprofile" method="post">
                     <div>
                         <div class="title">
