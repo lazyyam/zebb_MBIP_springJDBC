@@ -11,9 +11,11 @@
   </head>
 
 <body>
-		<c:if test="${sessionScope.user.getAuthenticated()== true}">
-            <c:out value="Authenticated: ${sessionScope.user.getAuthenticated()}" />
-			<c:redirect url="editprofile"/>
+		<c:if test="${sessionScope.user.getAuthenticated() == true && sessionScope.user.getLevel() == 1}">
+			<c:redirect url="BillPage"/>
+		</c:if>
+    <c:if test="${sessionScope.user.getAuthenticated() == true && sessionScope.user.getLevel() == 2}">
+			<c:redirect url="dashboard"/>
 		</c:if>
 			<div class="body-container">
                 <div class="login-container">
@@ -33,22 +35,7 @@
                     </form>
                   </div>
             </div>
-    
-            <!-- Href links -->
-            <ul>
-                <li><a href="/electricitybill">Electricity Bill</a></li>
-                <li><a href="/recyclingbill">Recycling Bill</a></li>
-                <li><a href="/waterbill">Water Bill</a></li>
-                <li><a href="/electricity">Electricity form</a></li>
-                <li><a href="/recycling">Recycling form</a></li>
-                <li><a href="/water">Water form</a></li>
-                <li><a href="/pertandinganadmin">Adminview pertandingan</a></li>
-                <li><a href="/timeline">Timeline</a></li>
-                <li><a href="/reportviewanalysis">Adminview report analysis</a></li>
-                <li><a href="/reportcalculation">Adminview report calculation</a></li>
-                <li><a href="/competitionUser">userview pertandingan</a></li>
-                <li><a href="/certificate">certificate</a></li>
-            </ul>
+
     </body>
 
 </html>

@@ -2,13 +2,20 @@ package my.utm.ip.zebb.services.electricalData;
 
 import java.util.*;
 
-import my.utm.ip.zebb.models.electricalData.ElectricalDAO;
+import my.utm.ip.zebb.models.electricalData.Electrical;
 
-public interface ElectricalService{
-    
-    List<ElectricalDAO> getAllElectricalData();
-    ElectricalDAO addElectricalData1(final ElectricalDAO electrical);
-    ElectricalDAO addElectricalData2(final ElectricalDAO electrical);
-    ElectricalDAO getElectricalDataByUserName_month(String userName, String month);
+public interface ElectricalService {
+
+    List<Electrical> getAllElectricalData();
+
+    Electrical addElectricalData(final Electrical electrical);
+
+    List<Electrical> getElectricalDataByUserName(String userName);
+
+    Electrical updateElectricalData(final Electrical recycle);
+
+    public boolean deleteElectricalData(String month);
+
     double getAllConsumption();
+
 }

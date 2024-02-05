@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import my.utm.ip.zebb.models.winner.Winner;
 import my.utm.ip.zebb.models.winner.WinnerDAO;
-import my.utm.ip.zebb.models.winner.WinnerDTO;
-import my.utm.ip.zebb.models.winner.WinnerRepository;
+import my.utm.ip.zebb.models.winner.Repository.WinnerRepository;
 
 public class WinnerService_Database implements WinnerService {
     
@@ -15,41 +15,69 @@ public class WinnerService_Database implements WinnerService {
     WinnerRepository repo;
 
     @Override
-    public List<WinnerDAO> getAllWinners() {
-        List<WinnerDTO> dtos = repo.getAllWinners();
-        List<WinnerDAO> winner = new ArrayList<WinnerDAO>();
-        for (WinnerDTO dto:dtos){
-            winner.add(new WinnerDAO(dto));
+    public List<Winner> getWinnersByUserAndMonth() {
+        List<WinnerDAO> daos = repo.getWinnersByUserAndMonth();
+        List<Winner> winners = new ArrayList<>();
+
+        for (WinnerDAO dao : daos) {
+            Winner winner = new Winner(dao);
+
+            // Calculate the carbon_reduction_rate
+            double sumCarbonFactors = winner.getRecycling_carbon_factor() +
+                                    winner.getElectric_carbon_factor() +
+                                    winner.getWater_carbon_factor();
+            double carbonReductionRate = sumCarbonFactors / 3.0;
+
+            // Set the carbon_reduction_rate in the WinnerDAO object
+            winner.setCarbon_reduction_rate(carbonReductionRate);
+
+            winners.add(winner);
         }
-        return winner;
+
+        return winners;
     }
 
     @Override
-    public WinnerDAO addWinner(WinnerDAO winner) {
-        WinnerDTO dto = repo.addWinner(winner.toDTO()); //setto
-        return new WinnerDAO(dto); //
+    public Winner updateWinner(Winner winner) {
+        WinnerDAO dao = repo.updateWinner(winner.toDAO()); //setto
+        return new Winner(dao); //
     }
 
     @Override
-    public WinnerDAO getWinnerByUserName(String userName) {
-        WinnerDTO dto =repo.getWinnerByUserName(userName);
-        WinnerDAO winner= new WinnerDAO();
-        winner.fromDTO(dto); //getto
-
-        return winner;
+    public int getWinnerCountForMonth(String month) {
+    
+        return repo.getWinnerCountForMonth(month);
     }
 
     @Override
-    public WinnerDAO updateWinner(WinnerDAO winner) {
-        WinnerDTO dto = repo.updateWinner(winner.toDTO()); //setto
-        return new WinnerDAO(dto);
+    public List<Winner> getWinners() {
+        List<WinnerDAO> daos = repo.getWinners();
+        List<Winner> winners = new ArrayList<>();
+
+        for (WinnerDAO dao : daos) {
+            Winner winner = new Winner(dao);
+
+            // Calculate the carbon_reduction_rate
+            double sumCarbonFactors = winner.getRecycling_carbon_factor() +
+                                    winner.getElectric_carbon_factor() +
+                                    winner.getWater_carbon_factor();
+            double carbonReductionRate = sumCarbonFactors / 3.0;
+
+            // Set the carbon_reduction_rate in the WinnerDAO object
+            winner.setCarbon_reduction_rate(carbonReductionRate);
+
+            winners.add(winner);
+        }
+
+        return winners;
     }
 
     @Override
-    public boolean deleteWinner(String userName) {
-        boolean success=repo.deleteWinner(userName);
+    public boolean deleteWinnerByUsername(String userName) {
+        boolean success = repo.deleteWinnerByUsername(userName);
+
         return success;
-
     }
+
     
 }

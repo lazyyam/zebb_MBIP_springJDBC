@@ -1,12 +1,10 @@
 package my.utm.ip.zebb.controllers;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import my.utm.ip.zebb.models.recycleData.RecyclingDAO;
+import my.utm.ip.zebb.models.recycleData.Recycling;
 import my.utm.ip.zebb.models.user.User;
 import my.utm.ip.zebb.services.recycleData.RecyclingService;
 
@@ -38,7 +36,7 @@ public class RecyclingController {
     @RequestMapping("/listAllRecyclingData") //for admin
     public String home(Model model) {
 
-        List<RecyclingDAO> recycling = recyclingService.getAllRecycleData();
+        List<Recycling> recycling = recyclingService.getAllRecycleData();
         model.addAttribute("allrecycling", recycling);
 
         return "recycling/RecyclingActivity";  //need change
@@ -48,7 +46,7 @@ public class RecyclingController {
     @RequestMapping("/listRecyclingDataByUsername_Month/{userName}")
     public String userhome(@PathVariable("userName") String userName, Model model) {
 
-        List<RecyclingDAO> recycling = recyclingService.getRecycleDataByUserName(userName);
+        List<Recycling> recycling = recyclingService.getRecycleDataByUserName(userName);
         model.addAttribute("userrecycling", recycling);
 
         return "recycling/RecyclingHome";  //need change
@@ -60,7 +58,7 @@ public class RecyclingController {
     public String addRecyclingDataForm(HttpSession session) {
 
         session.setAttribute("mode", "add");
-        session.setAttribute("recyling", new RecyclingDAO());
+        session.setAttribute("recyling", new Recycling());
 
         return "recycling/RecyclingActivity"; //need change
 
@@ -111,7 +109,7 @@ public class RecyclingController {
                 System.out.println("File Name: " + file.getOriginalFilename());
                 System.out.println("File Size: " + file.getSize());
 
-                RecyclingDAO recycling = new RecyclingDAO();
+                Recycling recycling = new Recycling();
                 recycling.setUserName(userName);
                 recycling.setWeight(sweight);
                 recycling.setMonth(month);
@@ -228,7 +226,7 @@ public class RecyclingController {
                 System.out.println("File Name: " + file.getOriginalFilename());
                 System.out.println("File Size: " + file.getSize());
 
-                RecyclingDAO recycling = new RecyclingDAO();
+                Recycling recycling = new Recycling();
                 recycling.setUserName(userName);
                 recycling.setWeight(sweight);
                 recycling.setMonth(month);

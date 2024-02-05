@@ -1,13 +1,14 @@
 package my.utm.ip.zebb.services.winner;
 
 import java.util.*;
-import my.utm.ip.zebb.models.winner.WinnerDAO;
+import my.utm.ip.zebb.models.winner.Winner;
 
 public interface WinnerService{
     
-    List<WinnerDAO> getAllWinners();
-    WinnerDAO addWinner(final WinnerDAO winner);
-    WinnerDAO getWinnerByUserName(String userName);
-    WinnerDAO updateWinner(final WinnerDAO winner);
-    public boolean deleteWinner(String winner);
+    List<Winner> getWinnersByUserAndMonth();
+    Winner updateWinner(final Winner winner);
+    int getWinnerCountForMonth(String month);
+    boolean deleteWinnerByUsername(String userName);
+    List<Winner> getWinners();
+
 }

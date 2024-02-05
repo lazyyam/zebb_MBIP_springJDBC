@@ -2,13 +2,20 @@ package my.utm.ip.zebb.services.waterData;
 
 import java.util.*;
 
-import my.utm.ip.zebb.models.waterData.WaterDAO;
+import my.utm.ip.zebb.models.waterData.Water;
 
-public interface WaterService{
-    
-    List<WaterDAO> getAllWaterData();
-    WaterDAO addWaterData1(final WaterDAO water);
-    WaterDAO addWaterData2(final WaterDAO water);
-    WaterDAO getWaterDataByUserName_month(String userName, String month);
+public interface WaterService {
+
+    List<Water> getAllWaterData();
+
+    Water addWaterData(final Water electrical);
+
+    List<Water> getWaterDataByUserName(String userName);
+
+    Water updateWaterData(final Water recycle);
+
+    public boolean deleteWaterData(String month);
+
     double getAllConsumption();
+
 }

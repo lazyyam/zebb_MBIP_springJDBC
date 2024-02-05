@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import my.utm.ip.zebb.models.winner.WinnerDAO;
+import my.utm.ip.zebb.models.winner.Winner;
 import my.utm.ip.zebb.services.winner.WinnerService;
 
 @Controller
@@ -19,90 +19,92 @@ public class WinnerController {
     @Autowired
     private WinnerService winnerService;
 
-    @RequestMapping("/listAllWinner")
-    public String home(Model model) {
+    @RequestMapping("/selectFromWinnerList")   //model must have same name with sql database attribute
+    public String selectFromWinnerList(Model model) {
 
-        List<WinnerDAO> winner = winnerService.getAllWinners();
-        model.addAttribute("winner", winner);
+        List<Winner> winners = winnerService.getWinnersByUserAndMonth();
+        model.addAttribute("winners", winners);
 
-        return "competitionUser";
-
+        return "winner/pertandinganadmin2"; //need change
     }
 
-    @RequestMapping("/viewAddWinnerForm")
+    @RequestMapping("/updateWinners")
+    public String updateWinners(@RequestParam("selectedUserAndMonth") List<String> selectedUserAndMonths) {
+        try {
+            // Validate the number of selected winners (up to 3)
+            if (selectedUserAndMonths.size() > 3) {
+                // Handle the case where more than 3 winners are selected
+                // You can add error handling here, like showing an error message to the user
+                return "redirect:/winner/updateWinners"; //need change 
+            }
+    
+            // Iterate through the selected winners and update the 'Winner' column
+            for (String selectedUserAndMonth : selectedUserAndMonths) {
+                String[] parts = selectedUserAndMonth.split("_");
+                String username = parts[0];
+                String month = parts[1];
 
-    public String addWinnerForm(Model model) {
+                 // Check if there are already 3 winners for the selected month
+                int winnerCountForMonth = winnerService.getWinnerCountForMonth(month);
+                if (winnerCountForMonth >= 3) {
+                    // Handle the case where there are already 3 winners for the selected month
+                    // You can add error handling here, like showing an error message to the user
+                    return "redirect:/winner/updateWinners"; //need change 
+                }
 
-        model.addAttribute("mode", "add");
-        model.addAttribute("winner", new WinnerDAO());
+    
+                Winner winner = new Winner();
+                winner.setUserName(username);
+                winner.setMonth(month);
+                winnerService.updateWinner(winner);
+    
+                System.out.println("Update successful for " + username + " in month " + month);
+            }
+    
+            return "redirect:/winner/finalWinners"; //need change // Redirect on successful update
 
-        return "product/formProduct"; //need change
-
+        } catch (Exception e) {
+            // Log the exception for debugging purposes
+            e.printStackTrace();
+            // You can add error handling here, like showing an error message to the user
+            return "redirect:/winner/updateWinners"; //need change 
+        }
     }
 
-    @RequestMapping("/viewEditWinnerForm")
+    @RequestMapping("/finalWinners")   //model must have same name with sql database attribute
+    public String showWinner(Model model) {
 
-    public String editWinnerForm(@RequestParam String userName, Model model) {
-        WinnerDAO winner = winnerService.getWinnerByUserName(userName);
-        model.addAttribute("winner", winner);
-        model.addAttribute("mode", "edit");
+        List<Winner> finalWinners = winnerService.getWinners();
+        model.addAttribute("finalWinners", finalWinners);
 
-        return "product/formProduct"; //need change
-
+        return "winner/pertandinganadmin"; //need change
     }
 
-    @RequestMapping("/addWinner")
+    @RequestMapping("/finalWinnersUser")   //model must have same name with sql database attribute
+    public String showWinnerUser(Model model) {
 
-    public String addWinner(
-            @RequestParam("userName") String userName,
-            @RequestParam("location") String location,
-            @RequestParam("water_consumption") String swater_comsumption,
-            @RequestParam("electricity_consumption") String selectricity_consumption,
-            @RequestParam("recycling_amount") String srecycling_amount,
-            @RequestParam("carbon_reduction_rate") String scarbon_reduction_rate) {
-        double water_consumption = Double.parseDouble(swater_comsumption);
-        double electricity_consumption = Double.parseDouble(selectricity_consumption);
-        double recycling_amount = Double.parseDouble(srecycling_amount);
-        double carbon_reduction_rate = Double.parseDouble(scarbon_reduction_rate);
-        WinnerDAO winner = new WinnerDAO(userName, location, water_consumption, electricity_consumption, recycling_amount, carbon_reduction_rate);
-        winnerService.addWinner(winner);
+        List<Winner> finalWinners = winnerService.getWinners();
+        model.addAttribute("finalWinners", finalWinners);
 
-        return "redirect:competitionUser"; //need change
-    }
-
-    @RequestMapping("/editProduct")
-
-    public String editProduct(
-            @RequestParam("userName") String userName,
-            @RequestParam("location") String location,
-            @RequestParam("water_consumption") String swater_comsumption,
-            @RequestParam("electricity_consumption") String selectricity_consumption,
-            @RequestParam("recycling_amount") String srecycling_amount,
-            @RequestParam("carbon_reduction_rate") String scarbon_reduction_rate) {
-        double water_consumption = Double.parseDouble(swater_comsumption);
-        double electricity_consumption = Double.parseDouble(selectricity_consumption);
-        double recycling_amount = Double.parseDouble(srecycling_amount);
-        double carbon_reduction_rate = Double.parseDouble(scarbon_reduction_rate);
-        WinnerDAO winner = new WinnerDAO(userName, location, water_consumption, electricity_consumption, recycling_amount, carbon_reduction_rate);
-        winnerService.updateWinner(winner);
-
-        return "redirect:competitionUser"; //need change
+        return "winner/pertandinganUser"; //need change
     }
 
     @RequestMapping("/deleteWinner")
 
-    public String deleteWinner(@RequestParam String userName, Model model) {
+    public String deleteWinnerByUsername(@RequestParam String Username, Model model) {
 
-        boolean success = winnerService.deleteWinner(userName);
+        boolean success = winnerService.deleteWinnerByUsername(Username);
 
         if (success) {
 
-            return "redirect:competitionUser"; //need change
+            return "redirect:/winner/finalWinners"; //need change
         }
 
         model.addAttribute("errorMessage", "Deletion Failed!. The product doesn't exist");
-        return "/product/error"; //need change or delete
+        return "/error"; //need change or delete
 
     }
 
+
+    
 }

@@ -1,14 +1,20 @@
 package my.utm.ip.zebb.services.recycleData;
 
 import java.util.*;
-import my.utm.ip.zebb.models.recycleData.RecyclingDAO;
 
-public interface RecyclingService{
-    
-    List<RecyclingDAO> getAllRecycleData();
-    RecyclingDAO addRecycleData(final RecyclingDAO recycle);
-    List<RecyclingDAO> getRecycleDataByUserName(String userName);
-    RecyclingDAO updateRecycleData(final RecyclingDAO recycle);
+import my.utm.ip.zebb.models.recycleData.Recycling;
+
+public interface RecyclingService {
+
+    List<Recycling> getAllRecycleData();
+
+    Recycling addRecycleData(final Recycling recycle);
+
+    List<Recycling> getRecycleDataByUserName(String userName);
+
+    Recycling updateRecycleData(final Recycling recycle);
+
     public boolean deleteRecycleData(String month);
+
     double getAllConsumption();
 }
