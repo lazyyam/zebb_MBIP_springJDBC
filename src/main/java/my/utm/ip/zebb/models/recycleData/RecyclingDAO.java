@@ -1,23 +1,14 @@
 package my.utm.ip.zebb.models.recycleData;
 
 public class RecyclingDAO {
-    String userName;
-    double weight;
-    String month;
-    String imageName;
-    byte[] imageData;
-    double recycling_carbon_factor;
+    private String userName;
+    private double weight;
+    private String month;
+    private String imageName;
+    private byte[] imageData;
+    private double recycling_carbon_factor;
 
-    public RecyclingDAO() {
-        this.userName = "";
-        this.weight = 0.0;
-        this.month = "";
-        this.imageName = "";
-        this.imageData = new byte[0]; 
-        this.recycling_carbon_factor=0.0;
-    }
-
-    public RecyclingDAO(String userName, double weight, String month, String imageName, byte[] imageData, double recycling_carbon_factor) {
+    public RecyclingDAO(String userName, double weight, String month, String imageName, byte[] imageData, double recycling_carbon_factor ) {
         this.userName = userName;
         this.weight = weight;
         this.month = month;
@@ -26,14 +17,13 @@ public class RecyclingDAO {
         this.recycling_carbon_factor = recycling_carbon_factor;
     }
 
-    public void assign(RecyclingDAO recycling) {
-        this.userName = recycling.userName;
-        this.weight = recycling.weight;
-        this.month = recycling.month;
-        this.imageName = recycling.imageName;
-        this.imageData = recycling.imageData;
-        this.recycling_carbon_factor = recycling.recycling_carbon_factor;
-
+    public RecyclingDAO() {
+        this.userName = "";
+        this.weight = 0.0;
+        this.month = "";
+        this.imageName = "";
+        this.imageData = new byte[0]; 
+        this.recycling_carbon_factor=0.0;
     }
 
     public void setUserName(String userName) {
@@ -84,42 +74,11 @@ public class RecyclingDAO {
         return recycling_carbon_factor;
     }
 
-    // methods to faciliate DTO
-    public void fromDTO(final RecyclingDTO dto) {
-
-        this.userName = dto.getUserName();
-        this.weight = dto.getWeight();
-        this.month = dto.getMonth();
-        this.imageName = dto.getImageName();
-        this.imageData = dto.getImageData();
-        this.recycling_carbon_factor=dto.getRecycling_carbon_factor();
-
-    }
-
-    public RecyclingDTO toDTO() {
-        RecyclingDTO dto = new RecyclingDTO();
-        dto.setUserName(this.userName);
-        dto.setWeight(this.weight);
-        dto.setMonth(this.month);
-        dto.setImageName(this.imageName);
-        dto.setImageData(this.imageData);
-        dto.setRecycling_carbon_factor(this.recycling_carbon_factor);
-
-        return dto;
-    }
-    
-    public RecyclingDAO(final RecyclingDTO dto){
-        this.fromDTO(dto);
-    }
-
-   // methods to faciliate debugging
-
-   @Override
+    @Override
    public String toString() {
        return "Recycling data [userName=" + userName + ", weight=" + weight + ", month=" + month + ", imageName=" + imageName
                + ", imageData=" + imageData + ", recycling_carbon_factor=" + recycling_carbon_factor +"]";
    }
 
-
-
+      
 }

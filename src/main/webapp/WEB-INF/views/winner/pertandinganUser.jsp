@@ -92,7 +92,7 @@
                                             </div>
                             
                                             <div class="winner-details-container">
-                                                <table class="winner-details-table">
+                                                <table class="winner-details-table" id = "winnersTable">
                                                     <thead>
                                                         <tr>
                                                             <th>Residents</th>
@@ -129,6 +129,33 @@
                     </main>
                 </div>
                 <script>
+                       function sortTable() {
+                        var table = document.getElementById("winnersTable");
+                        var rows = table.getElementsByTagName("tr");
+
+                        // Convert rows to an array for sorting
+                        var rowsArray = Array.from(rows);
+
+                        // Sort rows based on the carbon reduction rate (assuming it's in the 5th column)
+                        rowsArray.sort(function (rowA, rowB) {
+                            var rateA = parseFloat(rowA.cells[5].innerText);
+                            var rateB = parseFloat(rowB.cells[5].innerText);
+                            return rateB - rateA; // Descending order, change to rateA - rateB for ascending
+                        });
+
+                        // Remove existing rows from the table
+                        while (table.firstChild) {
+                            table.removeChild(table.firstChild);
+                        }
+
+                        // Append sorted rows back to the table
+                        for (var i = 0; i < rowsArray.length; i++) {
+                            table.appendChild(rowsArray[i]);
+                        }
+                    }
+
+                    // Call the sortTable function initially or whenever needed
+                    sortTable();
 
                     // Function to filter the table based on the selected month
                     function filterTable() {

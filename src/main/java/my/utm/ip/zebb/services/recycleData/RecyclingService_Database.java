@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import my.utm.ip.zebb.models.recycleData.Recycling;
 import my.utm.ip.zebb.models.recycleData.RecyclingDAO;
-import my.utm.ip.zebb.models.recycleData.RecyclingDTO;
 import my.utm.ip.zebb.models.recycleData.RecyclingRepository;
 public class RecyclingService_Database implements RecyclingService {
 
@@ -14,37 +14,37 @@ public class RecyclingService_Database implements RecyclingService {
     RecyclingRepository repo;
 
     @Override
-    public List<RecyclingDAO> getAllRecycleData() {
-        List<RecyclingDTO> dtos = repo.getAllRecycleData();
-        List<RecyclingDAO> recycle = new ArrayList<RecyclingDAO>();
-        for (RecyclingDTO dto : dtos) {
-            recycle.add(new RecyclingDAO(dto));
+    public List<Recycling> getAllRecycleData() {
+        List<RecyclingDAO> daos = repo.getAllRecycleData();
+        List<Recycling> recycle = new ArrayList<Recycling>();
+        for (RecyclingDAO dao : daos) {
+            recycle.add(new Recycling(dao));
         }
         return recycle;
     }
 
     @Override
-    public RecyclingDAO addRecycleData(RecyclingDAO recycle) {
-        RecyclingDTO dto = repo.addRecycleData(recycle.toDTO()); // setto
-        return new RecyclingDAO(dto); //
+    public Recycling addRecycleData(Recycling recycle) {
+        RecyclingDAO dao = repo.addRecycleData(recycle.todao()); // setto
+        return new Recycling(dao); //
     }
 
     @Override
-    public List<RecyclingDAO> getRecycleDataByUserName(String userName) {
-        List<RecyclingDTO> dtos = repo.getRecycleDataByUserName(userName);
-        List<RecyclingDAO> recycle = new ArrayList<RecyclingDAO>();
+    public List<Recycling> getRecycleDataByUserName(String userName) {
+        List<RecyclingDAO> daos = repo.getRecycleDataByUserName(userName);
+        List<Recycling> recycle = new ArrayList<Recycling>();
 
-        for (RecyclingDTO dto : dtos) {
-            recycle.add(new RecyclingDAO(dto));
+        for (RecyclingDAO dao : daos) {
+            recycle.add(new Recycling(dao));
         }
 
         return recycle;
     }
 
     @Override
-    public RecyclingDAO updateRecycleData(RecyclingDAO recycle) {
-        RecyclingDTO dto = repo.updateRecycleData(recycle.toDTO()); // setto
-        return new RecyclingDAO(dto);
+    public Recycling updateRecycleData(Recycling recycle) {
+        RecyclingDAO dao = repo.updateRecycleData(recycle.todao()); // setto
+        return new Recycling(dao);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class RecyclingService_Database implements RecyclingService {
 
     @Override
     public double getAllConsumption() {
-        List<RecyclingDAO> recyclingList = this.getAllRecycleData();
+        List<Recycling> recyclingList = this.getAllRecycleData();
         Double consumption = 0.0;
         for (int i = 0; i < recyclingList.size(); i++) {
             consumption += recyclingList.get(i).getWeight();

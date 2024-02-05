@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RecyclingRepository {
    
-    List<RecyclingDTO> getAllRecycleData();
-    RecyclingDTO addRecycleData(final RecyclingDTO recycle);
-    List<RecyclingDTO> getRecycleDataByUserName(String userName);
-    RecyclingDTO updateRecycleData(final RecyclingDTO recycle);
+    List<RecyclingDAO> getAllRecycleData();
+    RecyclingDAO addRecycleData(final RecyclingDAO recycle);
+    List<RecyclingDAO> getRecycleDataByUserName(String userName);
+    RecyclingDAO updateRecycleData(final RecyclingDAO recycle);
     public boolean deleteRecycleData(String month);
 }    
 
